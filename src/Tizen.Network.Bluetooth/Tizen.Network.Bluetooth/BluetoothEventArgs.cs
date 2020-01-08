@@ -954,6 +954,15 @@ namespace Tizen.Network.Bluetooth
             }
         }
     }
+    public class PositionChangedEventArgs : EventArgs
+    {
+    }
+    public class PlayStateChangedEventArgs : EventArgs
+    {
+    }
+    public class TrackInfoChangedEventArgs : EventArgs
+    {
+    }
 
     /// <summary>
     /// An extended EventArgs class contains the changed Bluetooth LE advertising state changed information.
