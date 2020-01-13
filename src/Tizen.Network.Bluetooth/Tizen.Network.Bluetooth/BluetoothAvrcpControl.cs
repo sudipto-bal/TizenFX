@@ -64,11 +64,11 @@ namespace Tizen.Network.Bluetooth
 
             }
         }
-        public Task Connect(string remote_address)
+        public Task ConnectAsync(string remote_address)
         {
             return _taskForConnection.Task;
         }
-        public Task Disonnect(string remote_address)
+        public Task DisonnectAsync(string remote_address)
         {
             return _taskForDisconnection.Task;
         }
