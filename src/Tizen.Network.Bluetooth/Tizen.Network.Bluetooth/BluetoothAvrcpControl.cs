@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Threading.Tasks;
 
 namespace Tizen.Network.Bluetooth
 {
@@ -26,6 +27,8 @@ namespace Tizen.Network.Bluetooth
     /// <since_tizen> 6 </since_tizen>
     public class BluetoothAvrcpControl : BluetoothProfile
     {
+        private TaskCompletionSource<bool> _taskForConnection;
+        private TaskCompletionSource<bool> _taskForDisconnection;
         public event EventHandler<PositionChangedEventArgs> PositionChanged /// Use unsigned int
         {
             add
@@ -61,11 +64,13 @@ namespace Tizen.Network.Bluetooth
 
             }
         }
-        public void Connect(string remote_address)
+        public Task Connect(string remote_address)
         {
+            return _taskForConnection.Task;
         }
-        public void Disonnect(string remote_address)
+        public Task Disonnect(string remote_address)
         {
+            return _taskForDisconnection.Task;
         }
         public void SetEqualizerState(EqualizerState state)
         {
@@ -103,6 +108,23 @@ namespace Tizen.Network.Bluetooth
         public void FreeTrackInfo(Track trackData)
         {
         }
-        
+        public void SendPlayerCommand(PlayerCommand command)
+        {
+        }
+        public void SendPlayerCommandTo(PlayerCommand command, string remote_address)
+        {
+        }
+        public void SetAbsoluteVolume(uint volume)
+        {
+        }
+        public void IncreaseVolume()
+        {
+        }
+        public void DecreaseVolume()
+        {
+        }
+        public void SendDelayReport(uint value)
+        {
+        }
     }
 }
