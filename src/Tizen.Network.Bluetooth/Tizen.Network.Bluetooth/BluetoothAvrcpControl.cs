@@ -61,10 +61,10 @@ namespace Tizen.Network.Bluetooth
 
             }
         }
-        public void Connect(string remote_address)
+        public Task Connect(string remote_address)
         {
         }
-        public void Disonnect(string remote_address)
+        public Task Disonnect(string remote_address)
         {
         }
         public void SetEqualizerState(EqualizerState state)
@@ -103,6 +103,23 @@ namespace Tizen.Network.Bluetooth
         public void FreeTrackInfo(Track trackData)
         {
         }
-        
+        public void SendPlayerCommand(PlayerCommand command)
+        {
+        }
+        public void SendPlayerCommandTo(PlayerCommand command, string remote_address)
+        {
+        }
+        public void SetAbsoluteVolume(uint volume)
+        {
+        }
+        public void IncreaseVolume()
+        {
+        }
+        public void DecreaseVolume()
+        {
+        }
+        public void SendDelayReport(uint value)
+        {
+        }
     }
 }
