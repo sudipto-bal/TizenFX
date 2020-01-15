@@ -145,6 +145,7 @@ namespace Tizen.NUI.Components
             }
         }
 
+        private new Extents padding;
         /// <summary>
         /// overwrite the Padding.
         /// </summary>
@@ -153,8 +154,36 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Extents Padding
         {
-            get;
-            set;
+            get
+            {
+                if (null == padding)
+                {
+                    padding = new Extents((ushort start, ushort end, ushort top, ushort bottom) =>
+                    {
+                        padding.Start = start;
+                        padding.End = end;
+                        padding.Top = top;
+                        padding.Bottom = bottom;
+                    }, 0, 0, 0, 0);
+                }
+
+                return padding;
+            }
+            set
+            {
+                if (null == padding)
+                {
+                    padding = new Extents((ushort start, ushort end, ushort top, ushort bottom) =>
+                    {
+                        padding.Start = start;
+                        padding.End = end;
+                        padding.Top = top;
+                        padding.Bottom = bottom;
+                    }, 0, 0, 0, 0);
+                }
+
+                padding.CopyFrom(value);
+            }
         }
 
         /// <summary>
@@ -235,6 +264,7 @@ namespace Tizen.NUI.Components
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void SetLayoutManager(LayoutManager layoutManager)
         {
+            if (null == layoutManager) return;
             mLayout = layoutManager;
 
             mLayout.SetRecyclerView(this);
@@ -440,9 +470,9 @@ namespace Tizen.NUI.Components
         /// you can override it to create your own default attributes.
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
-        /// This will be public opened in tizen_5.5 after ACR done. Before ACR, need to be hidden as inhouse API.
+        /// This will be public opened in tizen_6.0 after ACR done. Before ACR, need to be hidden as inhouse API.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected override Attributes GetAttributes()
+        protected override ViewStyle GetViewStyle()
         {
             return null;
         }
@@ -624,11 +654,11 @@ namespace Tizen.NUI.Components
             }
             if (mScrollBar.Direction == ScrollBar.DirectionType.Vertical)
             {
-                mScrollBar.ThumbSize = new Size(thickness, length);
+                mScrollBar.Style.Thumb.Size = new Size(thickness, length);
             }
             else
             {
-                mScrollBar.ThumbSize = new Size(length, thickness);
+                mScrollBar.Style.Thumb.Size = new Size(length, thickness);
             }
             mScrollBar.MinValue = 0;
             mScrollBar.MaxValue = (int)(range - extent);
@@ -1381,6 +1411,7 @@ namespace Tizen.NUI.Components
             [EditorBrowsable(EditorBrowsableState.Never)]
             public void LayoutChild(ViewHolder child, float left, float top, float width, float height)
             {
+                if (null == child) return;
                 View itemView = child.ItemView;
                 itemView.SizeWidth = width - itemView.Margin.Start - itemView.Margin.End;
                 itemView.SizeHeight = height - itemView.Margin.Top - itemView.Margin.Bottom;
@@ -1729,7 +1760,7 @@ namespace Tizen.NUI.Components
             [EditorBrowsable(EditorBrowsableState.Never)]
             public void ScrapAttachedViews(Recycler recycler)
             {
-                if (mChildHelper == null)
+                if (null == mChildHelper || null == recycler)
                 {
                     return;
                 }
@@ -1749,6 +1780,7 @@ namespace Tizen.NUI.Components
             [EditorBrowsable(EditorBrowsableState.Never)]
             public void RemoveAndRecycleViewAt(int index, Recycler recycler)
             {
+                if (null == recycler) return;
                 ViewHolder v = mChildHelper.GetChildAt(index);
                 mChildHelper.RemoveViewAt(index);
                 recycler.RecycleView(v);
@@ -1952,6 +1984,7 @@ namespace Tizen.NUI.Components
 
             private void AddViewInternal(ViewHolder holder, int index, bool disappearing)
             {
+                if (null == holder) return;
                 if (holder.IsScrap())
                 {
                     holder.Unscrap();
@@ -1965,6 +1998,7 @@ namespace Tizen.NUI.Components
 
             private void RecycleChildrenInt(FlexibleView.Recycler recycler)
             {
+                if (null == recycler) return;
                 foreach (ViewHolder holder in mPendingRecycleViews)
                 {
                     holder.PendingRecycle = false;
@@ -2315,6 +2349,7 @@ namespace Tizen.NUI.Components
             [EditorBrowsable(EditorBrowsableState.Never)]
             public void RecycleView(ViewHolder itemView)
             {
+                if (null == itemView) return;
                 itemView.ScrapContainer = null;
                 mRecyclerPool.PutRecycledView(itemView);
             }
