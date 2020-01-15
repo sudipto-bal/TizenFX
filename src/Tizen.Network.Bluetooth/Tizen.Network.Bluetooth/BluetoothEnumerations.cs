@@ -979,7 +979,7 @@ namespace Tizen.Network.Bluetooth
     /// <summary>
     /// Enumeration for the player command.
     /// </summary>
-    /// <since_tizen> 6 </since_tizen>
+    /// <since_tizen> 8 </since_tizen>
     public enum PlayerCommand
     {
         /// <summary>
