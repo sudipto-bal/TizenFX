@@ -1005,6 +1005,7 @@ namespace Tizen.NUI.Components
             mLayoutState.Offset = offset;
             mLayoutState.ScrollingOffset = LayoutState.SCROLLING_OFFSET_NaN;
             mLayoutState.Extra = mOrientationHelper.GetEndPadding();
+
         }
 
         private void UpdateLayoutStateToFillStart(int itemPosition, float offset)
@@ -1122,7 +1123,6 @@ namespace Tizen.NUI.Components
             // {@link #mExtra} is not considered to avoid recycling visible children.
             public float Extra = 0;
 
-
             // @return true if there are more items in the data adapter
             public bool HasMore(int itemCount)
             {
@@ -1137,6 +1137,7 @@ namespace Tizen.NUI.Components
             {
                 FlexibleView.ViewHolder itemView = recycler.GetViewForPosition(CurrentPosition);
                 CurrentPosition += ItemDirection;
+
                 return itemView;
             }
         }

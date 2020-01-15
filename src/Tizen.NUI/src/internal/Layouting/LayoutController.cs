@@ -181,6 +181,7 @@ namespace Tizen.NUI
         {
             if (rootNode.Layout != null)
             {
+                Debug.WriteLineIf( LayoutDebugController, "LayoutController Root found:" + rootNode.Name);
                 // rootNode has a layout, ensure all children have default layouts or layout items.
                 AutomaticallyAssignLayouts(rootNode);
                 // rootNode has a layout, start measuring and layouting from here.
@@ -524,7 +525,7 @@ namespace Tizen.NUI
             }
 
             // Set up a default transitions, will be overwritten if inherited from parent or set explicitly.
-            TransitionComponents positionTransitionComponents = CreateDefaultTransitionComponent(0, 100);
+            TransitionComponents positionTransitionComponents = CreateDefaultTransitionComponent(0, 0);
             TransitionComponents sizeTransitionComponents = CreateDefaultTransitionComponent(0, 0);
 
             bool matchedCustomTransitions = false;
