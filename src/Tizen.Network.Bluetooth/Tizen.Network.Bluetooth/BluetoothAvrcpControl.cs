@@ -24,7 +24,7 @@ namespace Tizen.Network.Bluetooth
     /// This class is used to send commands from the control device (For example, headset) to the target device (For example, media player).
     /// </summary>
     /// <privilege> http://tizen.org/privilege/bluetooth </privilege>
-    /// <since_tizen> 6 </since_tizen>
+    /// <since_tizen> 8 </since_tizen>
     public class BluetoothAvrcpControl : BluetoothProfile
     {
         private TaskCompletionSource<bool> _taskForConnection;
