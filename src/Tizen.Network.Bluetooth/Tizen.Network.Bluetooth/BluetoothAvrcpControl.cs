@@ -33,11 +33,11 @@ namespace Tizen.Network.Bluetooth
         {
             add
             {
-
+                BluetoothAvrcpControlImpl.Instance.PositionChanged += value;
             }
             remove
             {
-
+                BluetoothAvrcpControlImpl.Instance.PositionChanged -= value;
             }
         }
 
@@ -45,11 +45,11 @@ namespace Tizen.Network.Bluetooth
         {
             add
             {
-
+                BluetoothAvrcpControlImpl.Instance.PlayStateChanged += value;
             }
             remove
             {
-
+                BluetoothAvrcpControlImpl.Instance.PlayStateChanged -= value;
             }
         }
 
@@ -57,13 +57,14 @@ namespace Tizen.Network.Bluetooth
         {
             add
             {
-
+                BluetoothAvrcpControlImpl.Instance.TrackInfoChanged += value;
             }
             remove
             {
-
+                BluetoothAvrcpControlImpl.Instance.TrackInfoChanged -= value;
             }
         }
+
         public Task ConnectAsync(string remote_address)
         {
             return _taskForConnection.Task;
