@@ -574,19 +574,19 @@ internal static partial class Interop
         internal static extern int SetPositionChangedCallback(PositionChangedCallback PositionChangedCb, IntPtr userData);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_unset_position_changed_cb")]
-        internal static extern int UnsetPositionChangedCallback(PositionChangedCallback PositionChangedCb, IntPtr userData);
+        internal static extern int UnsetPositionChangedCallback();
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_set_play_status_changed_cb")]
         internal static extern int SetPlayStatusChangedCallback(PlayStatusChangedCallback PlayStatusChangedCb, IntPtr userData);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_unset_play_status_changed_cb")]
-        internal static extern int UnsetPlayStatusChangedCallback(PlayStatusChangedCallback PlayStatusChangedCb, IntPtr userData);
+        internal static extern int UnsetPlayStatusChangedCallback();
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_set_track_info_changed_cb")]
         internal static extern int SetTrackInfoChangedCallback(TrackInfoChangedCallback TrackInfoChangedCb, IntPtr userData);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_unset_track_info_changed_cb")]
-        internal static extern int UnsetTrackInfoChangedCallback(TrackInfoChangedCallback TrackInfoChangedCb, IntPtr userData);
+        internal static extern int UnsetTrackInfoChangedCallback();
 
         // Bluetooth GATT
 
