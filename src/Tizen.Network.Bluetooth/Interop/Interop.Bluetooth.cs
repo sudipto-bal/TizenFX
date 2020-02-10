@@ -90,7 +90,7 @@ internal static partial class Interop
         internal delegate void ScanModeChangedCallback(int scan, IntPtr userData);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        internal delegate void PositionChangedCallback(int position, IntPtr userData);
+        internal delegate void PositionChangedCallback(uint position, IntPtr userData);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate void PlayStatusChangedCallback(int play_status, IntPtr userData);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

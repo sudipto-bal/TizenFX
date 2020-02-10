@@ -956,12 +956,37 @@ namespace Tizen.Network.Bluetooth
     }
     public class PositionChangedEventArgs : EventArgs
     {
+        private uint _pos;
+        internal PositionChangedEventArgs(uint pos)
+        {
+            _pos = pos;
+        }
+        public uint Position
+        {
+            get
+            {
+                return _pos;
+            }
+        }
     }
     public class PlayStateChangedEventArgs : EventArgs
     {
+        private PlayerState _playState;
+        internal PlayStateChangedEventArgs(PlayerState playState)
+        {
+            _playState = playState;
+        }
+        public PlayerState PlayState
+        {
+            get
+            {
+                return _playState;
+            }
+        }
     }
     public class TrackInfoChangedEventArgs : EventArgs
     {
+
     }
 
     /// <summary>
