@@ -175,6 +175,56 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
+        internal void SetEqualizerState(EqualizerState state)
+        {
+            int ret = Interop.Bluetooth.SetEqualizerState(state);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to set equalizer state to " + state + " - " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
+        internal void SetRepeatMode(RepeatMode mode)
+        {
+            int ret = Interop.Bluetooth.SetRepeatMode(mode);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to set repeat mode to " + mode + " - " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
+        internal void SetShuffleMode(ShuffleMode mode)
+        {
+            int ret = Interop.Bluetooth.SetShuffleMode(mode);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to set shuffle mode to " + mode + " - " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
+        internal void SetScanMode(ScanMode mode)
+        {
+            int ret = Interop.Bluetooth.SetScanMode(mode);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to set scan mode to " + mode + " - " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
+        internal void SetAbsoluteVolume(uint volume)
+        {
+            int ret = Interop.Bluetooth.SetAbsoluteVolume(volume);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to set absolute volume to level " + volume + " - " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
         internal static BluetoothAvrcpControlImpl Instance
         {
             get

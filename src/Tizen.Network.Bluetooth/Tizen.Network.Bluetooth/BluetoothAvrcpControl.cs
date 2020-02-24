@@ -75,18 +75,69 @@ namespace Tizen.Network.Bluetooth
         }
         public void SetEqualizerState(EqualizerState state)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
+            {
+                BluetoothAvrcpControlImpl.Instance.SetEqualizerState(state);
+            }
+            else
+            {
+                if (!Globals.IsInitialize)
+                {
+                    Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                }
+                if (!Globals.IsAudioInitialize)
+                {
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
+
         public void GetEqualizerState(EqualizerState state)
         {
         }
+
         public void SetRepeatMode(RepeatMode mode)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                BluetoothAvrcpControlImpl.Instance.SetRepeatMode(mode);
+            }
+            else
+            {
+                if (!Globals.IsInitialize)
+                {
+                    Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                }
+                if (!Globals.IsAudioInitialize)
+                {
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
+
         public void GetRepeatMode(RepeatMode mode)
         {
         }
         public void SetShuffleMode(ShuffleMode mode)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                BluetoothAvrcpControlImpl.Instance.SetShuffleMode(mode);
+            }
+            else
+            {
+                if (!Globals.IsInitialize)
+                {
+                    Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                }
+                if (!Globals.IsAudioInitialize)
+                {
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
         public void GetShuffleMode(ShuffleMode mode)
         {
