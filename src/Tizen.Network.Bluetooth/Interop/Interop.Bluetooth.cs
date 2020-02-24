@@ -94,7 +94,7 @@ internal static partial class Interop
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate void PlayStatusChangedCallback(int play_status, IntPtr userData);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        internal delegate void TrackInfoChangedCallback(Track track, IntPtr userData);
+        internal delegate void TrackInfoChangedCallback([MarshalAs(UnmanagedType.Struct)]ref TrackInfoStruct track, IntPtr userData);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate void ConnectionChangedCallback(int result, bool connected, string deviceAddress, IntPtr userData);

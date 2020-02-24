@@ -986,7 +986,18 @@ namespace Tizen.Network.Bluetooth
     }
     public class TrackInfoChangedEventArgs : EventArgs
     {
-
+        private Track _track = new Track();
+        internal TrackInfoChangedEventArgs(Track Data)
+        {
+            _track = Data;
+        }
+        public Track TrackData
+        {
+            get
+            {
+                return _track;
+            }
+        }
     }
 
     /// <summary>

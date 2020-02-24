@@ -26,6 +26,7 @@ namespace Tizen.Network.Bluetooth
 
         private Interop.Bluetooth.PositionChangedCallback _positionChangedCallback;
         private Interop.Bluetooth.PlayStatusChangedCallback _playStateChangedCallback;
+        private Interop.Bluetooth.TrackInfoChangedCallback _trackInfoChangedCallback;
 
         private static BluetoothAvrcpControlImpl _instance = new BluetoothAvrcpControlImpl();
 
@@ -75,7 +76,7 @@ namespace Tizen.Network.Bluetooth
             {
                 if (_trackInfoChanged == null)
                 {
-                    //handling after function implementation;
+                    RegisterTrackInfoChangedEvent();
                 }
                 _trackInfoChanged += value;
             }
@@ -84,7 +85,7 @@ namespace Tizen.Network.Bluetooth
                 _trackInfoChanged -= value;
                 if (_trackInfoChanged == null)
                 {
-                    //handling after function implementation;
+                    UnregisterTrackInfoChangedEvent();
                 }
             }
         }
@@ -95,7 +96,7 @@ namespace Tizen.Network.Bluetooth
             {
                 if (_positionChanged != null)
                 {
-                    _positionChanged(null, new PositionChangedEventArgs(position));
+                    _positionChanged.Invoke(null, new PositionChangedEventArgs(position));
                 }
             };
             int ret = Interop.Bluetooth.SetPositionChangedCallback(_positionChangedCallback, IntPtr.Zero);
@@ -121,14 +122,14 @@ namespace Tizen.Network.Bluetooth
                 if (_playStateChanged != null)
                 {
                     PlayerState State = (PlayerState)state;
-                    _playStateChanged(null, new PlayStateChangedEventArgs(State));
-                }
-                int ret = Interop.Bluetooth.SetPlayStatusChangedCallback(_playStateChangedCallback, IntPtr.Zero);
-                if (ret != (int)BluetoothError.None)
-                {
-                    Log.Error(Globals.LogTag, "Failed to set play status changed callback, Error - " + (BluetoothError)ret);
+                    _playStateChanged.Invoke(null, new PlayStateChangedEventArgs(State));
                 }
             };
+            int ret = Interop.Bluetooth.SetPlayStatusChangedCallback(_playStateChangedCallback, IntPtr.Zero);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to set play status changed callback, Error - " + (BluetoothError)ret);
+            }
         }
 
         private void UnregisterPlayStateChangedEvent()
@@ -140,14 +141,38 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        private void RegisterTrackInfoEvent()
+        private void RegisterTrackInfoChangedEvent()
         {
+            _trackInfoChangedCallback = (ref TrackInfoStruct track_info, IntPtr userdata) =>
+            {
+                if (_trackInfoChanged != null)
+                {
+                    Track _track = new Track();
+                    _track.Album = track_info.Album;
+                    _track.Artist = track_info.Artist;
+                    _track.Genre = track_info.Genre;
+                    _track.Title = track_info.Title;
+                    _track.TotalTracks = track_info.total_tracks;
+                    _track.TrackNum = track_info.number;
+                    _track.Duration = track_info.duration;
+                    _trackInfoChanged.Invoke(null, new TrackInfoChangedEventArgs(_track));
+                }
+                int ret = Interop.Bluetooth.SetTrackInfoChangedCallback(_trackInfoChangedCallback, IntPtr.Zero);
+                if (ret != (int)BluetoothError.None)
+                {
+                    Log.Error(Globals.LogTag, "Failed to set track info changed callback, Error - " + (BluetoothError)ret);
+                }
+            };
 
         }
 
-        private void UnregisterTrackInfoEvent()
+        private void UnregisterTrackInfoChangedEvent()
         {
-
+            int ret = Interop.Bluetooth.UnsetTrackInfoChangedCallback();
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to unset track info changed callback, Error - " + (BluetoothError)ret);
+            }
         }
 
         internal static BluetoothAvrcpControlImpl Instance
