@@ -522,31 +522,31 @@ internal static partial class Interop
         internal static extern int SetEqualizerState(EqualizerState state);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_equalizer_state")]
-        internal static extern int GetEqualizerState(EqualizerState state);
+        internal static extern int GetEqualizerState(ref EqualizerState state);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_set_repeat_mode")]
         internal static extern int SetRepeatMode(RepeatMode mode);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_repeat_mode")]
-        internal static extern int GetRepeatMode(RepeatMode mode);
+        internal static extern int GetRepeatMode(ref RepeatMode mode);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_set_shuffle_mode")]
         internal static extern int SetShuffleMode(ShuffleMode mode);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_shuffle_mode")]
-        internal static extern int GetShuffleMode(ShuffleMode mode);
+        internal static extern int GetShuffleMode(ref ShuffleMode mode);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_set_scan_mode")]
         internal static extern int SetScanMode(ScanMode mode);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_scan_mode")]
-        internal static extern int GetScanMode(ScanMode mode);
+        internal static extern int GetScanMode(ref ScanMode mode);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_position")]
         internal static extern int GetPosition(ref uint position);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_play_status")]
-        internal static extern int GetPlayStatus(PlayerState state);
+        internal static extern int GetPlayStatus(ref PlayerState state);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_track_info")]
         internal static extern int GetTrackInfo(Track trackData);
