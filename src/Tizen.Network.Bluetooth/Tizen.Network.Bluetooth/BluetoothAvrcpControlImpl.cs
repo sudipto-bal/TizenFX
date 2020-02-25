@@ -94,10 +94,7 @@ namespace Tizen.Network.Bluetooth
         {
             _positionChangedCallback = (uint position, IntPtr userData) =>
             {
-                if (_positionChanged != null)
-                {
-                    _positionChanged.Invoke(null, new PositionChangedEventArgs(position));
-                }
+                _positionChanged?.Invoke(null, new PositionChangedEventArgs(position));
             };
             int ret = Interop.Bluetooth.SetPositionChangedCallback(_positionChangedCallback, IntPtr.Zero);
             if (ret != (int)BluetoothError.None)

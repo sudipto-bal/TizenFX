@@ -81,12 +81,12 @@ namespace Tizen.Network.Bluetooth
             }
             else
             {
-                if (!Globals.IsInitialize)
-                {
-                    Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
-                }
                 if (!Globals.IsAudioInitialize)
                 {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
                     Log.Error(Globals.LogTag, "Audio Not Initialized");
                 }
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
@@ -105,12 +105,12 @@ namespace Tizen.Network.Bluetooth
             }
             else
             {
-                if (!Globals.IsInitialize)
-                {
-                    Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
-                }
                 if (!Globals.IsAudioInitialize)
                 {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
                     Log.Error(Globals.LogTag, "Audio Not Initialized");
                 }
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
@@ -128,12 +128,12 @@ namespace Tizen.Network.Bluetooth
             }
             else
             {
-                if (!Globals.IsInitialize)
-                {
-                    Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
-                }
                 if (!Globals.IsAudioInitialize)
                 {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
                     Log.Error(Globals.LogTag, "Audio Not Initialized");
                 }
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
@@ -144,6 +144,22 @@ namespace Tizen.Network.Bluetooth
         }
         public void SetScanMode(ScanMode mode)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                BluetoothAvrcpControlImpl.Instance.SetScanMode(mode);
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
         public void GetScanMode(ScanMode mode)
         {
@@ -168,6 +184,22 @@ namespace Tizen.Network.Bluetooth
         }
         public void SetAbsoluteVolume(uint volume)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                Interop.Bluetooth.SetAbsoluteVolume(volume);
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
         public void IncreaseVolume()
         {
