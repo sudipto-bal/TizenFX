@@ -172,19 +172,16 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        internal void GetEqualizerState(ref EqualizerState state)
+        internal EqualizerState GetEqualizerState()
         {
-            EqualizerState _state = 0;
-            int ret = Interop.Bluetooth.GetEqualizerState(ref _state);
+            EqualizerState state;
+            int ret = Interop.Bluetooth.GetEqualizerState(out state);
             if (ret != (int)BluetoothError.None)
             {
                 Log.Error(Globals.LogTag, "Failed to get equalizer state " + (BluetoothError)ret);
                 BluetoothErrorFactory.ThrowBluetoothException(ret);
             }
-            else
-            {
-                state = _state;
-            }
+            return state;
         }
 
         internal void SetEqualizerState(EqualizerState state)
@@ -197,19 +194,16 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        internal void GetRepeatMode(ref RepeatMode mode)
+        internal RepeatMode GetRepeatMode()
         {
-            RepeatMode _mode = 0;
-            int ret = Interop.Bluetooth.GetRepeatMode(ref _mode);
+            RepeatMode mode;
+            int ret = Interop.Bluetooth.GetRepeatMode(out mode);
             if (ret != (int)BluetoothError.None)
             {
                 Log.Error(Globals.LogTag, "Failed to get repeat mode" + (BluetoothError)ret);
                 BluetoothErrorFactory.ThrowBluetoothException(ret);
             }
-            else
-            {
-                mode = _mode;
-            }
+            return mode;
         }
 
         internal void SetRepeatMode(RepeatMode mode)
@@ -222,19 +216,16 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        internal void GetShuffleMode(ref ShuffleMode mode)
+        internal ShuffleMode GetShuffleMode()
         {
-            ShuffleMode _mode = 0;
-            int ret = Interop.Bluetooth.GetShuffleMode(ref _mode);
+            ShuffleMode mode;
+            int ret = Interop.Bluetooth.GetShuffleMode(out mode);
             if (ret != (int)BluetoothError.None)
             {
                 Log.Error(Globals.LogTag, "Failed to get shuffle mode" + (BluetoothError)ret);
                 BluetoothErrorFactory.ThrowBluetoothException(ret);
             }
-            else
-            {
-                mode = _mode;
-            }
+            return mode;
         }
 
         internal void SetShuffleMode(ShuffleMode mode)
@@ -247,19 +238,16 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        internal void GetScanMode(ref ScanMode mode)
+        internal ScanMode GetScanMode()
         {
-            ScanMode _mode = 0;
-            int ret = Interop.Bluetooth.GetScanMode(ref _mode);
+            ScanMode mode;
+            int ret = Interop.Bluetooth.GetScanMode(out mode);
             if (ret != (int)BluetoothError.None)
             {
                 Log.Error(Globals.LogTag, "Failed to get scan mode" + (BluetoothError)ret);
                 BluetoothErrorFactory.ThrowBluetoothException(ret);
             }
-            else
-            {
-                mode = _mode;
-            }
+            return mode;
         }
 
         internal void SetScanMode(ScanMode mode)

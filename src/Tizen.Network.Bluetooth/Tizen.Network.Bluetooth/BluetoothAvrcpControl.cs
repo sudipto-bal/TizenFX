@@ -93,11 +93,11 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        public void GetEqualizerState(ref EqualizerState state)
+        public EqualizerState GetEqualizerState()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
             {
-                BluetoothAvrcpControlImpl.Instance.GetEqualizerState(ref state);
+                return BluetoothAvrcpControlImpl.Instance.GetEqualizerState();
             }
             else
             {
@@ -110,6 +110,7 @@ namespace Tizen.Network.Bluetooth
                     Log.Error(Globals.LogTag, "Audio Not Initialized");
                 }
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+                return EqualizerState.Off;
             }
         }
 
@@ -133,11 +134,11 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        public void GetRepeatMode(ref RepeatMode mode)
+        public RepeatMode GetRepeatMode()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
             {
-                BluetoothAvrcpControlImpl.Instance.GetRepeatMode(ref mode);
+                return BluetoothAvrcpControlImpl.Instance.GetRepeatMode();
             }
             else
             {
@@ -151,6 +152,7 @@ namespace Tizen.Network.Bluetooth
                 }
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
+            return RepeatMode.Off;
         }
         public void SetShuffleMode(ShuffleMode mode)
         {
@@ -171,11 +173,11 @@ namespace Tizen.Network.Bluetooth
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
         }
-        public void GetShuffleMode(ref ShuffleMode mode)
+        public ShuffleMode GetShuffleMode()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
             {
-                BluetoothAvrcpControlImpl.Instance.GetShuffleMode(ref mode);
+                return BluetoothAvrcpControlImpl.Instance.GetShuffleMode();
             }
             else
             {
@@ -189,6 +191,7 @@ namespace Tizen.Network.Bluetooth
                 }
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
+            return ShuffleMode.Off;
         }
         public void SetScanMode(ScanMode mode)
         {
@@ -209,11 +212,11 @@ namespace Tizen.Network.Bluetooth
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
         }
-        public void GetScanMode(ref ScanMode mode)
+        public ScanMode GetScanMode()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
             {
-                BluetoothAvrcpControlImpl.Instance.GetScanMode(ref mode);
+                return BluetoothAvrcpControlImpl.Instance.GetScanMode();
             }
             else
             {
@@ -227,6 +230,7 @@ namespace Tizen.Network.Bluetooth
                 }
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
+            return ScanMode.Off;
         }
         public void GetPosition(ref uint position)
         {
