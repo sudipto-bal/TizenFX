@@ -270,6 +270,50 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
+        internal uint GetPosition()
+        {
+            uint position;
+            int ret = Interop.Bluetooth.GetPosition(out position);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to get play position" + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+            return position;
+        }
+
+        internal PlayerState GetPlayStatus()
+        {
+            PlayerState state;
+            int ret = Interop.Bluetooth.GetPlayStatus(out state);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to get play status" + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+            return state;
+        }
+
+        public Track GetTrackInfo()
+        {
+            Track trackdata = new Track();
+            TrackInfoStruct trackinfo;
+            int ret = Interop.Bluetooth.GetTrackInfo(out trackinfo);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to get track data" + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+            trackdata.Album = trackinfo.Album;
+            trackdata.Artist = trackinfo.Artist;
+            trackdata.Genre = trackinfo.Genre;
+            trackdata.Title = trackinfo.Title;
+            trackdata.TotalTracks = trackinfo.total_tracks;
+            trackdata.TrackNum = trackinfo.number;
+            trackdata.Duration = trackinfo.duration;
+            return trackdata;
+        }
+
         internal static BluetoothAvrcpControlImpl Instance
         {
             get

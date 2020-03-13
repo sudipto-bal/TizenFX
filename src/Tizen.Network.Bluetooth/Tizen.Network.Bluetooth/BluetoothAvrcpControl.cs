@@ -232,17 +232,69 @@ namespace Tizen.Network.Bluetooth
             }
             return ScanMode.Off;
         }
-        public void GetPosition(ref uint position)
+        public uint GetPosition()
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                return BluetoothAvrcpControlImpl.Instance.GetPosition();
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
+            return 0;
         }
-        public void GetPlayStatus(PlayerState state)
+        public PlayerState GetPlayStatus()
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                return BluetoothAvrcpControlImpl.Instance.GetPlayStatus();
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
+            return PlayerState.Stopped;
         }
-        public void GetTrackInfo(Track trackData)
+        public Track GetTrackInfo()
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                return BluetoothAvrcpControlImpl.Instance.GetTrackInfo();
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
+            return null;
         }
-        public void FreeTrackInfo(Track trackData)
+        public void FreeTrackInfo(Track trackData) //needs special testing
         {
+
         }
         public void SendPlayerCommand(PlayerCommand command)
         {

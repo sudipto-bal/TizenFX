@@ -549,7 +549,7 @@ internal static partial class Interop
         internal static extern int GetPlayStatus(out PlayerState state);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_track_info")]
-        internal static extern int GetTrackInfo(Track trackData);
+        internal static extern int GetTrackInfo([MarshalAs(UnmanagedType.Struct)]out TrackInfoStruct trackdata);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_free_track_info")]
         internal static extern int FreeTrackInfo(Track trackData);
