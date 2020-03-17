@@ -294,7 +294,7 @@ namespace Tizen.Network.Bluetooth
             return state;
         }
 
-        public Track GetTrackInfo()
+        internal Track GetTrackInfo()
         {
             Track trackdata = new Track();
             TrackInfoStruct trackinfo;
@@ -312,6 +312,36 @@ namespace Tizen.Network.Bluetooth
             trackdata.TrackNum = trackinfo.number;
             trackdata.Duration = trackinfo.duration;
             return trackdata;
+        }
+
+        internal void IncreaseVolume()
+        {
+            int ret = Interop.Bluetooth.IncreaseVolume();
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to increase volume" + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
+        internal void DecreaseVolume()
+        {
+            int ret = Interop.Bluetooth.DecreaseVolume();
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to decrease volume" + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
+        internal void SendDelayReport(uint delay)
+        {
+            int ret = Interop.Bluetooth.SendDelayReport(delay);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to send delay report" + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
         }
 
         internal static BluetoothAvrcpControlImpl Instance

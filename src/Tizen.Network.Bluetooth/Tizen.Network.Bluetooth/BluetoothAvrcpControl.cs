@@ -323,12 +323,60 @@ namespace Tizen.Network.Bluetooth
         }
         public void IncreaseVolume()
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                Interop.Bluetooth.IncreaseVolume();
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
         public void DecreaseVolume()
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                Interop.Bluetooth.DecreaseVolume();
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
-        public void SendDelayReport(uint value)
+        public void SendDelayReport(uint delay)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                Interop.Bluetooth.SendDelayReport(delay);
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
     }
 }
