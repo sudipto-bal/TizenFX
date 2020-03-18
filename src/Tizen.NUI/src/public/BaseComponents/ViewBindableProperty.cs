@@ -56,6 +56,12 @@ namespace Tizen.NUI.BaseComponents
             if (newValue != null)
             {
                 Tizen.NUI.Object.SetProperty(view.swigCPtr, View.Property.BACKGROUND, new Tizen.NUI.PropertyValue((Color)newValue));
+
+                // Apply CornerRadius if needs
+                if (view.cornerRadius != null && view.cornerRadius.GetValue() != 0)
+                {
+                    view.ApplyCornerRadius();
+                }
             }
         },
         defaultValueCreator: (bindable) =>
@@ -82,10 +88,17 @@ namespace Tizen.NUI.BaseComponents
             if (newValue != null)
             {
                 string url = (string)newValue;
+                view.ClearBackground();
 
                 if (Rectangle.IsNullOrZero(view.backgroundImageBorder))
                 {
                     Tizen.NUI.Object.SetProperty(view.swigCPtr, View.Property.BACKGROUND, string.IsNullOrEmpty(url) ? new PropertyValue() : new PropertyValue(url));
+
+                    // Apply CornerRadius if needs
+                    if (view.cornerRadius != null && view.cornerRadius.GetValue() != 0)
+                    {
+                        view.ApplyCornerRadius();
+                    }
                 }
                 else
                 {
@@ -129,6 +142,12 @@ namespace Tizen.NUI.BaseComponents
             if (Rectangle.IsNullOrZero(view.backgroundImageBorder))
             {
                 Tizen.NUI.Object.SetProperty(view.swigCPtr, View.Property.BACKGROUND, new PropertyValue(url));
+
+                // Apply CornerRadius if needs
+                if (view.cornerRadius != null && view.cornerRadius.GetValue() != 0)
+                {
+                    view.ApplyCornerRadius();
+                }
             }
             else
             {
@@ -1385,7 +1404,7 @@ namespace Tizen.NUI.BaseComponents
             var view = (View)bindable;
             bool hadShadowExtents = view.HasShadowExtents();
 
-            (view.imageShadow ?? (view.imageShadow = new ViewSelector<ImageShadow>(view, view.OnControlStateChangedForShadow))).Clone(newValue);
+            (view.imageShadow ?? (view.imageShadow = new CloneableViewSelector<ImageShadow>(view, view.OnControlStateChangedForShadow))).Set(newValue);
             Tizen.NUI.Object.SetProperty(view.swigCPtr, Interop.ViewProperty.View_Property_SHADOW_get(), ImageShadow.ToPropertyValue(view.imageShadow.GetValue(), view));
 
             view.boxShadow?.Clear();
@@ -1406,7 +1425,7 @@ namespace Tizen.NUI.BaseComponents
             var view = (View)bindable;
             bool hadShadowExtents = view.HasShadowExtents();
 
-            (view.boxShadow ?? (view.boxShadow = new ViewSelector<Shadow>(view, view.OnControlStateChangedForShadow))).Clone(newValue);
+            (view.boxShadow ?? (view.boxShadow = new CloneableViewSelector<Shadow>(view, view.OnControlStateChangedForShadow))).Set(newValue);
             Tizen.NUI.Object.SetProperty(view.swigCPtr, Interop.ViewProperty.View_Property_SHADOW_get(), Shadow.ToPropertyValue(view.boxShadow.GetValue(), view));
 
             view.imageShadow?.Clear();
@@ -1416,6 +1435,27 @@ namespace Tizen.NUI.BaseComponents
         {
             var view = (View)bindable;
             return view.boxShadow?.GetValue();
+        });
+
+        /// <summary>
+        /// CornerRadius Property
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(float), typeof(View), default(float), propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var view = (View)bindable;
+
+            (view.cornerRadius ?? (view.cornerRadius = new ViewSelector<float?>(view, view.OnControlStateChangedForCornerRadius))).Set(newValue);
+
+            view.ApplyCornerRadius();
+
+            // Update shadow visual
+            view.ApplyShadow();
+        },
+        defaultValueCreator: (bindable) =>
+        {
+            var view = (View)bindable;
+            return view.cornerRadius?.GetValue();
         });
 
         /// <summary>
