@@ -29,6 +29,10 @@ namespace Tizen.Network.Bluetooth
     {
         private TaskCompletionSource<bool> _taskForConnection;
         private TaskCompletionSource<bool> _taskForDisconnection;
+        /// <summary>
+        /// The PositionChangedEventArgs event is invoked when the play position of a track is changed.
+        /// </summary>
+        /// <since_tizen> 8 </since_tizen>
         public event EventHandler<PositionChangedEventArgs> PositionChanged
         {
             add
@@ -41,6 +45,10 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
+        /// <summary>
+        /// The PlayStateChangedEventArgs event is invoked when the play state of a track gets changed.
+        /// </summary>
+        /// <since_tizen> 8 </since_tizen>
         public event EventHandler<PlayStateChangedEventArgs> PlayStateChanged
         {
             add
@@ -53,6 +61,10 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
+        /// <summary>
+        /// The TrackInfoChangedEventArgs event is invoked when info of a track gets changed.
+        /// </summary>
+        /// <since_tizen> 8 </since_tizen>
         public event EventHandler<TrackInfoChangedEventArgs> TrackInfoChanged
         {
             add
@@ -73,6 +85,19 @@ namespace Tizen.Network.Bluetooth
         {
             return _taskForDisconnection.Task;
         }
+
+        /// <summary>
+        /// Sets equalizer state of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <param name="state">The equalizer state.</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when setting the equalizer state of the target device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void SetEqualizerState(EqualizerState state)
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
@@ -93,6 +118,19 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
+        /// <summary>
+        /// Gets equalizer state of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <param name="state">The equalizer state.</param>
+        /// <returns> Equalizer state of the target device </returns>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when retrieving the equalizer state of the target device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public EqualizerState GetEqualizerState()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
@@ -114,6 +152,18 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
+        /// <summary>
+        /// Sets repeat mode of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <param name="mode">The equalizer state.</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when notifying the repeat mode state to the remote device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void SetRepeatMode(RepeatMode mode)
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -134,6 +184,18 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
+        /// <summary>
+        /// Gets repeat mode of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <returns> Repeat mode of the target device </returns>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when notifying the repeat mode state to the remote device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public RepeatMode GetRepeatMode()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -154,6 +216,19 @@ namespace Tizen.Network.Bluetooth
             }
             return RepeatMode.Off;
         }
+
+        /// <summary>
+        /// Sets shuffle mode of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <param name="mode">Shuffle mode to be set</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when setting shuffle mode of the target device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void SetShuffleMode(ShuffleMode mode)
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -173,6 +248,19 @@ namespace Tizen.Network.Bluetooth
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
         }
+
+        /// <summary>
+        /// Gets shuffle mode of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <returns> Shuffle mode of the target device </returns>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or if retrieving shuffle mode of the target device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public ShuffleMode GetShuffleMode()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -193,6 +281,19 @@ namespace Tizen.Network.Bluetooth
             }
             return ShuffleMode.Off;
         }
+
+        /// <summary>
+        /// Sets scan mode of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <param name="mode">The scan mode.</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when setting the scan mode of the target device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void SetScanMode(ScanMode mode)
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -212,6 +313,19 @@ namespace Tizen.Network.Bluetooth
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
         }
+
+        /// <summary>
+        /// Gets scan mode of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <returns> Scan mode of the target device </returns>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or if retrieving scan mode of the remote device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public ScanMode GetScanMode()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -232,6 +346,19 @@ namespace Tizen.Network.Bluetooth
             }
             return ScanMode.Off;
         }
+
+        /// <summary>
+        /// Gets position of the track being played on the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <returns> Play position of the track being played on the target device </returns>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or if there is an error retrieving the position of the track that is currently being played.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public uint GetPosition()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -252,6 +379,19 @@ namespace Tizen.Network.Bluetooth
             }
             return 0;
         }
+
+        /// <summary>
+        /// Gets player state of the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <returns> Play status of the target device </returns>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or if there happens to be an error while retrieving the player state of the target device.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public PlayerState GetPlayStatus()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -272,6 +412,19 @@ namespace Tizen.Network.Bluetooth
             }
             return PlayerState.Stopped;
         }
+
+        /// <summary>
+        /// Gets info of the track being played on the target device.
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <returns> Info of the track being played on the target device </returns>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or if there happens to be an error while retrieving info of the track being played on the target.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public Track GetTrackInfo()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -302,6 +455,19 @@ namespace Tizen.Network.Bluetooth
         public void SendPlayerCommandTo(PlayerCommand command, string remote_address)
         {
         }
+
+        /// <summary>
+        /// Sets absolute volume of target device
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected
+        /// </remarks>
+        /// <param name="volume">The volume level to be set</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when setting absolute volume of the target device fails
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void SetAbsoluteVolume(uint volume)
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -321,6 +487,18 @@ namespace Tizen.Network.Bluetooth
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
         }
+
+        /// <summary>
+        /// Increases volume of target device
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected
+        /// </remarks>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when increasing volume of the target device fails
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void IncreaseVolume()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -340,6 +518,18 @@ namespace Tizen.Network.Bluetooth
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
         }
+
+        /// <summary>
+        /// Decreases volume of target device
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected
+        /// </remarks>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when decreasing volume of the target device fails
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void DecreaseVolume()
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
@@ -359,6 +549,19 @@ namespace Tizen.Network.Bluetooth
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
         }
+
+        /// <summary>
+        /// Sends delay report to the target device
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected
+        /// </remarks>
+        /// <param name="delay">Delay to be sent to target</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when sending delay to the target device fails
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void SendDelayReport(uint delay)
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
