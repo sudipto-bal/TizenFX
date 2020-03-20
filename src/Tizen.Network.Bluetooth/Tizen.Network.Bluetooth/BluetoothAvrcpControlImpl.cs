@@ -260,16 +260,6 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        internal void SetAbsoluteVolume(uint volume)
-        {
-            int ret = Interop.Bluetooth.SetAbsoluteVolume(volume);
-            if (ret != (int)BluetoothError.None)
-            {
-                Log.Error(Globals.LogTag, "Failed to set absolute volume to level " + volume + " - " + (BluetoothError)ret);
-                BluetoothErrorFactory.ThrowBluetoothException(ret);
-            }
-        }
-
         internal uint GetPosition()
         {
             uint position;
@@ -312,6 +302,35 @@ namespace Tizen.Network.Bluetooth
             trackdata.TrackNum = trackinfo.number;
             trackdata.Duration = trackinfo.duration;
             return trackdata;
+        }
+
+        internal void SendPlayerCommand(PlayerCommand command)
+        {
+            int ret = Interop.Bluetooth.SendPlayerCommand(command);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to send player command " + command + " - " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+        internal void SendPlayerCommandTo(PlayerCommand command, string remote_address)
+        {
+            int ret = Interop.Bluetooth.SendPlayerCommandTo(command, remote_address);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to send player command " + command + " to remote address " + remote_address + " - " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
+        internal void SetAbsoluteVolume(uint volume)
+        {
+            int ret = Interop.Bluetooth.SetAbsoluteVolume(volume);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to set absolute volume to level " + volume + " - " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
         }
 
         internal void IncreaseVolume()

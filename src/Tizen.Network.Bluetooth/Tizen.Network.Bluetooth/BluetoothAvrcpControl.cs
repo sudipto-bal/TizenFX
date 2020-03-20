@@ -449,11 +449,70 @@ namespace Tizen.Network.Bluetooth
         {
 
         }
+
+        /// <summary>
+        /// Sends a particular play command to the target device
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <param name="command">Command to be sent</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when sending command to the target device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void SendPlayerCommand(PlayerCommand command)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                BluetoothAvrcpControlImpl.Instance.SendPlayerCommand(command);
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
+
+        /// <summary>
+        /// Sends a play command to a particular target device
+        /// </summary>
+        /// <remarks>
+        /// The remote device must be connected.
+        /// </remarks>
+        /// <param name="command">Command to be sent</param>
+        /// <param name="remote_address">Address of the device to send command</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the Bluetooth is not enabled
+        /// or when sending command to the target device fails.
+        /// </exception>
+        /// <since_tizen> 8 </since_tizen>
         public void SendPlayerCommandTo(PlayerCommand command, string remote_address)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize && Globals.IsAudioInitialize)
+            {
+                BluetoothAvrcpControlImpl.Instance.SendPlayerCommandTo(command, remote_address);
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
         }
 
         /// <summary>
