@@ -954,6 +954,34 @@ namespace Tizen.Network.Bluetooth
             }
         }
     }
+
+    public class AvrcpControlConnChangedEventArgs : EventArgs
+    {
+        private bool _isConnected;
+        string _remoteAddress;
+        // Setting Values when Event is invoked
+        internal AvrcpControlConnChangedEventArgs(bool conn, string address)
+        {
+            _isConnected = conn;
+            _remoteAddress = address;
+        }
+
+        public bool IsConnected
+        {
+            get
+            {
+                return _isConnected;
+            }
+        }
+
+        public string RemoteAddress
+        {
+            get
+            {
+                return _remoteAddress;
+            }
+        }
+    }
     public class PositionChangedEventArgs : EventArgs
     {
         private uint _pos;

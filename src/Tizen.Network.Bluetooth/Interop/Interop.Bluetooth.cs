@@ -90,6 +90,8 @@ internal static partial class Interop
         internal delegate void ScanModeChangedCallback(int scan, IntPtr userData);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate void AvrcpControlConnChangedCB(bool connected, string remote_address, IntPtr userData);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate void PositionChangedCallback(uint position, IntPtr userData);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate void PlayStatusChangedCallback(int play_status, IntPtr userData);
@@ -518,6 +520,18 @@ internal static partial class Interop
 
         // Bluetooth AVRCP Control
 
+        [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_initialize")]
+        internal static extern int AvrcpControlInitialize(AvrcpControlConnChangedCB callback, IntPtr userData);
+
+        [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_deinitialize")]
+        internal static extern int AvrcpControlDeinitialize();
+
+        [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_connect")]
+        internal static extern int AvrcpControlConnect(string address);
+
+        [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_disconnect")]
+        internal static extern int AvrcpControlDisconnect(string address);
+
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_set_equalizer_state")]
         internal static extern int SetEqualizerState(EqualizerState state);
 
@@ -549,10 +563,10 @@ internal static partial class Interop
         internal static extern int GetPlayStatus(out PlayerState state);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_get_track_info")]
-        internal static extern int GetTrackInfo([MarshalAs(UnmanagedType.Struct)]out TrackInfoStruct trackdata);
+        internal static extern int GetTrackInfo(out IntPtr infoptr);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_free_track_info")]
-        internal static extern int FreeTrackInfo(Track trackData);
+        internal static extern int FreeTrackInfo(IntPtr infoptr);
 
         [DllImport(Libraries.Bluetooth, EntryPoint = "bt_avrcp_control_send_player_command")]
         internal static extern int SendPlayerCommand(PlayerCommand command);

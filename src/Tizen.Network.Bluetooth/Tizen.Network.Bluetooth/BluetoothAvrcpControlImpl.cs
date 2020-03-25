@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace Tizen.Network.Bluetooth
 {
@@ -23,12 +24,34 @@ namespace Tizen.Network.Bluetooth
         private event EventHandler<PositionChangedEventArgs> _positionChanged;
         private event EventHandler<PlayStateChangedEventArgs> _playStateChanged;
         private event EventHandler<TrackInfoChangedEventArgs> _trackInfoChanged;
+        private event EventHandler<AvrcpControlConnChangedEventArgs> _connStateChanged;
 
         private Interop.Bluetooth.PositionChangedCallback _positionChangedCallback;
         private Interop.Bluetooth.PlayStatusChangedCallback _playStateChangedCallback;
         private Interop.Bluetooth.TrackInfoChangedCallback _trackInfoChangedCallback;
+        private Interop.Bluetooth.AvrcpControlConnChangedCB _connStateChangedCallback;
 
         private static BluetoothAvrcpControlImpl _instance = new BluetoothAvrcpControlImpl();
+
+        internal event EventHandler<AvrcpControlConnChangedEventArgs> ConnStateChanged
+        {
+            add
+            {
+                if (_connStateChanged == null)
+                {
+                    RegisterConnStateChangedEvent();
+                }
+                _connStateChanged += value;
+            }
+            remove
+            {
+                _connStateChanged -= value;
+                if (_connStateChanged == null)
+                {
+                    UnregisterConnStateChangedEvent();
+                }
+            }
+        }
 
         internal event EventHandler<PositionChangedEventArgs> PositionChanged
         {
@@ -87,6 +110,28 @@ namespace Tizen.Network.Bluetooth
                 {
                     UnregisterTrackInfoChangedEvent();
                 }
+            }
+        }
+
+        private void RegisterConnStateChangedEvent() //to be implemented in constructor in upcoming patch
+        {
+            _connStateChangedCallback = (bool connected, string remote_address, IntPtr userData) =>
+            {
+                _connStateChanged?.Invoke(null, new AvrcpControlConnChangedEventArgs(connected, remote_address));
+            };
+            int ret = Interop.Bluetooth.AvrcpControlInitialize(_connStateChangedCallback, IntPtr.Zero);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to initialize AVRCP Control, Error - " + (BluetoothError)ret);
+            }
+        }
+
+        private void UnregisterConnStateChangedEvent() //to be implemented in destructor in upcoming patch
+        {
+            int ret = Interop.Bluetooth.Deinitialize();
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to deinitialize AVRCP Control, Error - " + (BluetoothError)ret);
             }
         }
 
@@ -169,6 +214,26 @@ namespace Tizen.Network.Bluetooth
             if (ret != (int)BluetoothError.None)
             {
                 Log.Error(Globals.LogTag, "Failed to unset track info changed callback, Error - " + (BluetoothError)ret);
+            }
+        }
+
+        internal void Connect(string address)
+        {
+            int ret = Interop.Bluetooth.AvrcpControlConnect(address);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to connect " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+        }
+
+        internal void Disconnect(string address)
+        {
+            int ret = Interop.Bluetooth.AvrcpControlDisconnect(address);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to disconnect " + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
             }
         }
 
@@ -288,12 +353,16 @@ namespace Tizen.Network.Bluetooth
         {
             Track trackdata = new Track();
             TrackInfoStruct trackinfo;
-            int ret = Interop.Bluetooth.GetTrackInfo(out trackinfo);
+            IntPtr infoptr;
+
+            int ret = Interop.Bluetooth.GetTrackInfo(out infoptr);
             if (ret != (int)BluetoothError.None)
             {
                 Log.Error(Globals.LogTag, "Failed to get track data" + (BluetoothError)ret);
                 BluetoothErrorFactory.ThrowBluetoothException(ret);
             }
+
+            trackinfo = (TrackInfoStruct)Marshal.PtrToStructure(infoptr, typeof(TrackInfoStruct));
             trackdata.Album = trackinfo.Album;
             trackdata.Artist = trackinfo.Artist;
             trackdata.Genre = trackinfo.Genre;
@@ -301,6 +370,14 @@ namespace Tizen.Network.Bluetooth
             trackdata.TotalTracks = trackinfo.total_tracks;
             trackdata.TrackNum = trackinfo.number;
             trackdata.Duration = trackinfo.duration;
+
+            ret = Interop.Bluetooth.FreeTrackInfo(infoptr);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to free track data" + (BluetoothError)ret);
+                BluetoothErrorFactory.ThrowBluetoothException(ret);
+            }
+
             return trackdata;
         }
 

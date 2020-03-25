@@ -79,10 +79,42 @@ namespace Tizen.Network.Bluetooth
 
         public Task ConnectAsync(string remote_address)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
+            {
+                BluetoothAvrcpControlImpl.Instance.Connect(remote_address);
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
             return _taskForConnection.Task;
         }
         public Task DisonnectAsync(string remote_address)
         {
+            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
+            {
+                BluetoothAvrcpControlImpl.Instance.Disconnect(remote_address);
+            }
+            else
+            {
+                if (!Globals.IsAudioInitialize)
+                {
+                    if (!Globals.IsInitialize)
+                    {
+                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
+                    }
+                    Log.Error(Globals.LogTag, "Audio Not Initialized");
+                }
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
+            }
             return _taskForDisconnection.Task;
         }
 
