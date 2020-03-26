@@ -33,26 +33,6 @@ namespace Tizen.Network.Bluetooth
 
         private static BluetoothAvrcpControlImpl _instance = new BluetoothAvrcpControlImpl();
 
-        internal event EventHandler<AvrcpControlConnChangedEventArgs> ConnStateChanged
-        {
-            add
-            {
-                if (_connStateChanged == null)
-                {
-                    RegisterConnStateChangedEvent();
-                }
-                _connStateChanged += value;
-            }
-            remove
-            {
-                _connStateChanged -= value;
-                if (_connStateChanged == null)
-                {
-                    UnregisterConnStateChangedEvent();
-                }
-            }
-        }
-
         internal event EventHandler<PositionChangedEventArgs> PositionChanged
         {
             add
@@ -110,28 +90,6 @@ namespace Tizen.Network.Bluetooth
                 {
                     UnregisterTrackInfoChangedEvent();
                 }
-            }
-        }
-
-        private void RegisterConnStateChangedEvent() //to be implemented in constructor in upcoming patch
-        {
-            _connStateChangedCallback = (bool connected, string remote_address, IntPtr userData) =>
-            {
-                _connStateChanged?.Invoke(null, new AvrcpControlConnChangedEventArgs(connected, remote_address));
-            };
-            int ret = Interop.Bluetooth.AvrcpControlInitialize(_connStateChangedCallback, IntPtr.Zero);
-            if (ret != (int)BluetoothError.None)
-            {
-                Log.Error(Globals.LogTag, "Failed to initialize AVRCP Control, Error - " + (BluetoothError)ret);
-            }
-        }
-
-        private void UnregisterConnStateChangedEvent() //to be implemented in destructor in upcoming patch
-        {
-            int ret = Interop.Bluetooth.Deinitialize();
-            if (ret != (int)BluetoothError.None)
-            {
-                Log.Error(Globals.LogTag, "Failed to deinitialize AVRCP Control, Error - " + (BluetoothError)ret);
             }
         }
 
@@ -445,6 +403,28 @@ namespace Tizen.Network.Bluetooth
             get
             {
                 return _instance;
+            }
+        }
+
+        private BluetoothAvrcpControlImpl()
+        {
+            _connStateChangedCallback = (bool connected, string remote_address, IntPtr userData) =>
+            {
+                _connStateChanged?.Invoke(null, new AvrcpControlConnChangedEventArgs(connected, remote_address));
+            };
+            int ret = Interop.Bluetooth.AvrcpControlInitialize(_connStateChangedCallback, IntPtr.Zero);
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to initialize AVRCP Control, Error - " + (BluetoothError)ret);
+            }
+        }
+
+        ~BluetoothAvrcpControlImpl()
+        {
+            int ret = Interop.Bluetooth.Deinitialize();
+            if (ret != (int)BluetoothError.None)
+            {
+                Log.Error(Globals.LogTag, "Failed to deinitialize AVRCP Control, Error - " + (BluetoothError)ret);
             }
         }
     }
