@@ -77,6 +77,13 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
+        /// <summary>
+        /// Asynchronously connects the remote device
+        /// </summary>
+        /// <param name="remote_address">Address of device to be connected</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the method fails</exception>
+        /// <since_tizen> 8 </since_tizen>
         public Task ConnectAsync(string remote_address)
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
@@ -97,6 +104,14 @@ namespace Tizen.Network.Bluetooth
             }
             return _taskForConnection.Task;
         }
+
+        /// <summary>
+        /// Asynchronously disconnects the remote device
+        /// </summary>
+        /// <param name="remote_address">Address of device to be disconnected</param>
+        /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the method fails</exception>
+        /// <since_tizen> 8 </since_tizen>
         public Task DisonnectAsync(string remote_address)
         {
             if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
