@@ -33,6 +33,18 @@ namespace Tizen.Network.Bluetooth
 
         private static BluetoothAvrcpControlImpl _instance = new BluetoothAvrcpControlImpl();
 
+        internal event EventHandler<AvrcpControlConnChangedEventArgs> ConnectionChanged
+        {
+            add
+            {
+                _connStateChanged += value;
+            }
+            remove
+            {
+                _connStateChanged -= value;
+            }
+        }
+
         internal event EventHandler<PositionChangedEventArgs> PositionChanged
         {
             add
