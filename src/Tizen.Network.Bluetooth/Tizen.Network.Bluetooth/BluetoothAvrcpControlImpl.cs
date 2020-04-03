@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 
 namespace Tizen.Network.Bluetooth
 {
-    internal class BluetoothAvrcpControlImpl //implement Disposable interface
+    internal class BluetoothAvrcpControlImpl :IDisposable
     {
         private event EventHandler<PositionChangedEventArgs> _positionChanged;
         private event EventHandler<PlayStateChangedEventArgs> _playStateChanged;
@@ -32,6 +32,7 @@ namespace Tizen.Network.Bluetooth
         private Interop.Bluetooth.AvrcpControlConnChangedCB _connStateChangedCallback;
 
         private static BluetoothAvrcpControlImpl _instance = new BluetoothAvrcpControlImpl();
+        private bool disposed = false;
 
         internal event EventHandler<AvrcpControlConnChangedEventArgs> ConnectionChanged
         {
@@ -418,7 +419,12 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        private BluetoothAvrcpControlImpl()
+        private BluetoothAvrcpControlImpl ()
+        {
+            controlInitialize();
+        }
+
+        private void controlInitialize()
         {
             _connStateChangedCallback = (bool connected, string remote_address, IntPtr userData) =>
             {
@@ -431,13 +437,55 @@ namespace Tizen.Network.Bluetooth
             }
         }
 
-        ~BluetoothAvrcpControlImpl()
+        private void controlDeinitialize()
         {
             int ret = Interop.Bluetooth.Deinitialize();
             if (ret != (int)BluetoothError.None)
             {
                 Log.Error(Globals.LogTag, "Failed to deinitialize AVRCP Control, Error - " + (BluetoothError)ret);
             }
+        }
+
+        private void UnregisterAllEvents()
+        {
+            if (_playStateChanged == null)
+            {
+                UnregisterPlayStateChangedEvent();
+            }
+            if (_positionChanged == null)
+            {
+                UnregisterPositionChangedEvent();
+            }
+            if (_trackInfoChanged == null)
+            {
+                UnregisterTrackInfoChangedEvent();
+            }
+        }
+
+        ~BluetoothAvrcpControlImpl()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                // Free managed objects.
+            }
+            //Free unmanaged objects
+            controlDeinitialize();
+            UnregisterAllEvents();
+            disposed = true;
         }
     }
 }

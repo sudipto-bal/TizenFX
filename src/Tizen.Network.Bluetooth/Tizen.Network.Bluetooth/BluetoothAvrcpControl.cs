@@ -30,6 +30,52 @@ namespace Tizen.Network.Bluetooth
         private string _remoteAddress;
         private TaskCompletionSource<bool> _taskForConnection;
         private TaskCompletionSource<bool> _taskForDisconnection;
+        private bool disposed = false;
+
+        internal BluetoothAvrcpControl()
+        {
+            BluetoothAvrcpControlImpl.Instance.ConnectionChanged += OnConnectionChanged;
+        }
+
+        private void OnConnectionChanged(object s, AvrcpControlConnChangedEventArgs e)
+        {
+            if (e.RemoteAddress != _remoteAddress)
+            {
+                return;
+            }
+            if (_taskForConnection != null && !_taskForConnection.Task.IsCompleted)
+            {
+                if (e.IsConnected == true)
+                {
+                    _taskForConnection.SetResult(true);
+                    ConnStateChanged?.Invoke(this, e);
+                }
+                else
+                {
+                    _taskForConnection.SetException(BluetoothErrorFactory.CreateBluetoothException((int)BluetoothError.OperationFailed));
+                }
+                _taskForConnection = null;
+                return;
+            }
+            if (_taskForDisconnection != null && !_taskForDisconnection.Task.IsCompleted)
+            {
+                if (e.IsConnected == false)
+                {
+                    _taskForDisconnection.SetResult(true);
+                    ConnStateChanged?.Invoke(this, e);
+                }
+                else
+                {
+                    _taskForDisconnection.SetException(BluetoothErrorFactory.CreateBluetoothException((int)BluetoothError.OperationFailed));
+                }
+                _taskForDisconnection = null;
+            }
+        }
+
+        /// <summary>
+        /// The AvrcpControlConnChangedEventArgs event is invoked when the connection status of device is changed.
+        /// </summary>
+        /// <since_tizen> 8 </since_tizen>
         public event EventHandler<AvrcpControlConnChangedEventArgs> ConnStateChanged;
 
         /// <summary>
@@ -89,23 +135,14 @@ namespace Tizen.Network.Bluetooth
         /// <since_tizen> 8 </since_tizen>
         public Task ConnectAsync(string remote_address)
         {
-            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
+            if (_taskForConnection != null && !_taskForConnection.Task.IsCompleted)
             {
-                _remoteAddress = remote_address;
-                BluetoothAvrcpControlImpl.Instance.Connect(remote_address);
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NowInProgress);
             }
-            else
-            {
-                if (!Globals.IsAudioInitialize)
-                {
-                    if (!Globals.IsInitialize)
-                    {
-                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
-                    }
-                    Log.Error(Globals.LogTag, "Audio Not Initialized");
-                }
-                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
-            }
+
+            _taskForConnection = new TaskCompletionSource<bool>();
+            _remoteAddress = remote_address;
+            BluetoothAvrcpControlImpl.Instance.Connect(remote_address);
             return _taskForConnection.Task;
         }
 
@@ -116,24 +153,15 @@ namespace Tizen.Network.Bluetooth
         /// <exception cref="NotSupportedException">Thrown when the Bluetooth is not supported.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the method fails</exception>
         /// <since_tizen> 8 </since_tizen>
-        public Task DisonnectAsync(string remote_address)
+        public Task DisconnectAsync(string remote_address)
         {
-            if (BluetoothAdapter.IsBluetoothEnabled && Globals.IsInitialize)
+            if (_taskForDisconnection != null && !_taskForDisconnection.Task.IsCompleted)
             {
-                BluetoothAvrcpControlImpl.Instance.Disconnect(remote_address);
+                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NowInProgress);
             }
-            else
-            {
-                if (!Globals.IsAudioInitialize)
-                {
-                    if (!Globals.IsInitialize)
-                    {
-                        Log.Error(Globals.LogTag, "Bluetooth Not Initialized");
-                    }
-                    Log.Error(Globals.LogTag, "Audio Not Initialized");
-                }
-                BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
-            }
+            _taskForDisconnection = new TaskCompletionSource<bool>();
+            _remoteAddress = remote_address;
+            BluetoothAvrcpControlImpl.Instance.Disconnect(remote_address);
             return _taskForDisconnection.Task;
         }
 
@@ -691,40 +719,29 @@ namespace Tizen.Network.Bluetooth
                 BluetoothErrorFactory.ThrowBluetoothException((int)BluetoothError.NotEnabled);
             }
         }
-
-        internal BluetoothAvrcpControl ()
+        ~BluetoothAvrcpControl()
         {
-            BluetoothAvrcpControlImpl.Instance.ConnectionChanged += (s, e) =>
-            {
-                if (e.RemoteAddress == _remoteAddress)
-                {
-                    if (_taskForConnection != null && !_taskForConnection.Task.IsCompleted)
-                    {
-                        if (e.IsConnected == true)
-                        {
-                            _taskForConnection.SetResult(true);
-                            ConnStateChanged?.Invoke(this, new AvrcpControlConnChangedEventArgs(e.IsConnected, e.RemoteAddress));
-                        }
-                        else
-                        {
-                            _taskForConnection.SetException(BluetoothErrorFactory.CreateBluetoothException((int)BluetoothError.OperationFailed));
-                        }
-                    }
-                    if (_taskForDisconnection != null && !_taskForDisconnection.Task.IsCompleted)
-                    {
-                        if (e.IsConnected == false)
-                        {
-                            _taskForDisconnection.SetResult(true);
-                            ConnStateChanged?.Invoke(this, new AvrcpControlConnChangedEventArgs(e.IsConnected, e.RemoteAddress));
-                        }
-                        else
-                        {
-                            _taskForDisconnection.SetException(BluetoothErrorFactory.CreateBluetoothException((int)BluetoothError.OperationFailed)));
-                        }
-                    }
-                }
-            };
+            Dispose(false);
+        }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                // Free managed objects.
+                ConnStateChanged -= OnConnectionChanged;
+            }
+            //Free unmanaged objects.
+            disposed = true;
         }
     }
 }
