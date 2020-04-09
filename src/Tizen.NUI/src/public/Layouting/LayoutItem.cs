@@ -74,6 +74,12 @@ namespace Tizen.NUI
          public bool LayoutWithTransition{get; set;}
 
         /// <summary>
+        /// [Draft] Set position by layouting result
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool SetPositionByLayout{get;set;} = true;
+
+        /// <summary>
         /// [Draft] Margin for this LayoutItem
         /// </summary>
         /// <since_tizen> 6 </since_tizen>
@@ -530,12 +536,15 @@ namespace Tizen.NUI
 
                 if (Owner.Parent != null && Owner.Parent.Layout != null && Owner.Parent.Layout.LayoutWithTransition)
                 {
-                    Window.Instance.LayoutController.AddTransitionDataEntry(_layoutPositionData);
+                    NUIApplication.GetDefaultWindow().LayoutController.AddTransitionDataEntry(_layoutPositionData);
                 }
                 else
                 {
-                    Owner.Size = new Size(right - left, bottom - top, Owner.Position.Z);
-                    Owner.Position = new Position(left, top, Owner.Position.Z);
+                    Owner.SetSize(right - left, bottom - top, Owner.Position.Z);
+                    if(SetPositionByLayout)
+                    {
+                        Owner.SetPosition(left, top, Owner.Position.Z);
+                    }
                 }
 
 

@@ -21,6 +21,9 @@ res/nui_component_default_slider_thumb_bg_p.png    #common #mobile #mobile-emul 
 res/nui_component_default_slider_thumb_n.png       #common #mobile #mobile-emul #tv #wearable
 res/nui_component_default_dropdown_button_icon.png #common #mobile #mobile-emul #tv #wearable
 res/nui_component_default_dropdown_list_bg.png     #common #mobile #mobile-emul #tv #wearable
+res/nui_wearable_checkbox_icon.json                #wearable
+res/nui_wearable_radiobutton_icon.json             #wearable
+res/nui_wearable_switch_icon.json                  #wearable
 Tizen.Account.AccountManager.dll                   #mobile #mobile-emul #tv #wearable
 Tizen.Account.FidoClient.dll                       #mobile #mobile-emul #wearable
 Tizen.Account.OAuth2.dll                           #mobile #mobile-emul #wearable
@@ -56,7 +59,7 @@ Tizen.dll                                          #common #mobile #mobile-emul 
 Tizen.Location.dll                                 #mobile #mobile-emul #tv #wearable
 Tizen.Location.Geofence.dll                        #mobile #mobile-emul
 Tizen.Log.dll                                      #common #mobile #mobile-emul #tv #wearable
-Tizen.MachineLearning.Inference.dll                #mobile #mobile-emul #tv #wearable
+Tizen.MachineLearning.Inference.dll                #common #mobile #mobile-emul #tv #wearable
 Tizen.Maps.dll                                     #mobile #mobile-emul #tv #wearable
 Tizen.Messaging.dll                                #mobile #mobile-emul #wearable
 Tizen.Messaging.Push.dll                           #common #mobile #mobile-emul #tv #wearable
