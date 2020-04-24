@@ -985,7 +985,7 @@ namespace Tizen.Network.Bluetooth
         /// <summary>
         /// Play current track
         /// </summary>
-        Play,
+        Play = 1,
         /// <summary>
         /// Pause current track
         /// </summary>
